@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "app_name",
+      "value": "SuperDeviceDemo"
+    },
+    {
+      "name": "mainability_description",
+      "value": "Java_Tablet_Empty Feature Ability"
+    },
+    {
+      "name": "HelloWorld",
+      "value": "Hello World"
+    }
+  ]
+}
