@@ -1,0 +1,3 @@
+# SuperDeviceDemo
+
+Super Device demo with Harmony OS to run on a smartwatch, lite wearable, tablet, ...
