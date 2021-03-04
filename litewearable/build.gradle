@@ -14,7 +14,7 @@ ohos {
     }
     compileSdkVersion 4
     defaultConfig {
-        compatibleSdkVersion 3
+        compatibleSdkVersion 4
     }
 }
 
