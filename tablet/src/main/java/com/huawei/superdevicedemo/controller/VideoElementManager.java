@@ -35,7 +35,6 @@ import java.util.List;
 public class VideoElementManager {
     private static final String TAG = VideoElementManager.class.getSimpleName();
     private static final String WEB_VIDEO_PATH = "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/cae-legoup-video-target/93be3d88-9fc2-4fbd-bd14-833bca731ca7.mp4";
-    private static final String GAME_VIDEO_PATH = "http://statics.igg.com/video/game/1051/2020/lords%20mobile%E5%AE%98%E7%BD%91%E8%A7%86%E9%A2%91_v0.2.mp4";
     private List<AVElement> avElements = new ArrayList<>();
 
     /**
@@ -85,17 +84,10 @@ public class VideoElementManager {
     private void writeDefault() {
         avElements.add(
                 new AVElement(new AVDescription.Builder()
-                        .setTitle("web_video_01")
+                        .setTitle("web_video")
                         .setIMediaUri(Uri.parse(WEB_VIDEO_PATH))
                         .setMediaId(WEB_VIDEO_PATH)
                         .build(),
-                AVElement.AVELEMENT_FLAG_PLAYABLE));
-        avElements.add(
-                new AVElement(new AVDescription.Builder()
-                            .setTitle("web_video_02")
-                            .setIMediaUri(Uri.parse(GAME_VIDEO_PATH))
-                            .setMediaId(GAME_VIDEO_PATH)
-                            .build(),
                 AVElement.AVELEMENT_FLAG_PLAYABLE));
     }
 }

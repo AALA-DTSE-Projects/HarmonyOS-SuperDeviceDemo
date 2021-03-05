@@ -23,6 +23,15 @@
         ohos:align_parent_top="true"
         ohos:center_in_parent="true"/>
 
+    <RoundProgressBar
+        ohos:id="$+id:round_progress_bar"
+        ohos:height="200vp"
+        ohos:width="200vp"
+        ohos:visibility="hide"
+        ohos:progress_width="10vp"
+        ohos:progress_color="#47CC47"
+        ohos:center_in_parent="true"/>
+
     <Image
         ohos:id="$+id:play_button"
         ohos:height="match_content"

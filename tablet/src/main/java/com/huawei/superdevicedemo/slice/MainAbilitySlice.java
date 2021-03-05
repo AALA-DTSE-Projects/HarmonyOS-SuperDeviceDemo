@@ -1,18 +1,23 @@
 package com.huawei.superdevicedemo.slice;
 
+import com.huawei.superdevicedemo.MainAbility;
 import com.huawei.superdevicedemo.ResourceTable;
 import com.huawei.superdevicedemo.controller.LogUtil;
 import com.huawei.superdevicedemo.controller.VideoElementManager;
 import com.huawei.superdevicedemo.controller.VideoPlayerPlugin;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
+import ohos.agp.components.Component;
 import ohos.agp.components.Image;
+import ohos.agp.components.RoundProgressBar;
 import ohos.agp.components.Text;
 import ohos.agp.components.surfaceprovider.SurfaceProvider;
 import ohos.agp.graphics.Surface;
 import ohos.agp.graphics.SurfaceOps;
 import ohos.agp.window.service.WindowManager;
+import ohos.bundle.IBundleManager;
 import ohos.media.common.sessioncore.AVElement;
+import ohos.security.SystemPermission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +30,17 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
     private Surface surface;
     private Text title;
     private Image playButton;
+    private RoundProgressBar progressBar;
     private int currentPosition;
 
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
         super.setUIContent(ResourceTable.Layout_ability_main);
+        requestPermissions(
+                SystemPermission.READ_MEDIA,
+                SystemPermission.MEDIA_LOCATION
+        );
         setupUI();
         initData();
     }
@@ -61,8 +71,37 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
         super.onStop();
     }
 
+    private void requestPermissions(String... permissions) {
+        for (String permission : permissions) {
+            if (verifyCallingOrSelfPermission(permission) != IBundleManager.PERMISSION_GRANTED) {
+                requestPermissionsFromUser(
+                        new String[] {
+                                permission
+                        },
+                        MainAbility.REQUEST_CODE);
+            }
+        }
+    }
+
     private void initData() {
-        videoPlayerPlugin = new VideoPlayerPlugin(this);
+        videoPlayerPlugin = new VideoPlayerPlugin(this, new VideoPlayerPlugin.MediaPlayerCallback() {
+            @Override
+            public void onPlayBackComplete() {
+                getUITaskDispatcher().asyncDispatch(() -> play(currentPosition + 1));
+            }
+
+            @Override
+            public void onBuffering(int percent) {
+                getUITaskDispatcher().asyncDispatch(() -> {
+                    if (percent == 100) {
+                        progressBar.setVisibility(Component.HIDE);
+                    } else {
+                        progressBar.setVisibility(Component.VISIBLE);
+                        progressBar.setProgressValue(percent);
+                    }
+                });
+            }
+        });
         VideoElementManager videoElementManager = new VideoElementManager(this);
         avElements = videoElementManager.getAvElements();
         currentPosition = 0;
@@ -75,6 +114,7 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
         surfaceProvider.getSurfaceOps().get().addCallback(this);
 
         title = (Text) findComponentById(ResourceTable.Id_title);
+        progressBar = (RoundProgressBar) findComponentById(ResourceTable.Id_round_progress_bar);
         playButton = (Image) findComponentById(ResourceTable.Id_play_button);
         Image forwardButton = (Image) findComponentById(ResourceTable.Id_forward_button);
         Image rewindButton = (Image) findComponentById(ResourceTable.Id_rewind_button);
@@ -102,8 +142,8 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
         AVElement item = avElements.get(position);
         String itemText = item.getAVDescription().getTitle().toString();
         title.setText(itemText);
-        videoPlayerPlugin.startPlay(avElements.get(position), surface);
         playButton.setPixelMap(ResourceTable.Media_pause_button);
+        videoPlayerPlugin.startPlay(avElements.get(position), surface);
     }
 
 }

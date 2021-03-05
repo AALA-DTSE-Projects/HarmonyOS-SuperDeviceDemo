@@ -24,11 +24,11 @@ import ohos.hiviewdfx.HiLogLabel;
  * @since 2020-01-17
  */
 public class LogUtil {
-    private static final String TAG_LOG = "Super Device Demo:";
+    private static final String TAG_LOG = "SuperDeviceDemo:";
 
-    private static final int DOMAIN_ID = 0xD002B00;
+    private static final int DOMAIN_ID = 0x00201;
 
-    private static final HiLogLabel LABEL_LOG = new HiLogLabel(3, DOMAIN_ID, LogUtil.TAG_LOG);
+    private static final HiLogLabel LABEL_LOG = new HiLogLabel(HiLog.LOG_APP, DOMAIN_ID, LogUtil.TAG_LOG);
 
     private static final String LOG_FORMAT = "%{public}s: %{public}s";
 

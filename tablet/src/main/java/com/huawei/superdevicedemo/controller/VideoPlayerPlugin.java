@@ -26,7 +26,7 @@ import ohos.media.player.Player;
  *
  * @since 2020-09-14
  */
-public class VideoPlayerPlugin {
+public class VideoPlayerPlugin implements Player.IPlayerCallback {
     private static final String TAG = VideoPlayerPlugin.class.getSimpleName();
 
     private static final int REWIND_TIME = 2000;
@@ -37,13 +37,21 @@ public class VideoPlayerPlugin {
 
     private Runnable videoRunnable;
 
+    private MediaPlayerCallback callback;
+
+    public interface MediaPlayerCallback {
+        void onPlayBackComplete();
+        void onBuffering(int percent);
+    }
+
     /**
      * VideoPlayerPlugin
      *
      * @param sliceContext Context
      */
-    public VideoPlayerPlugin(Context sliceContext) {
+    public VideoPlayerPlugin(Context sliceContext, MediaPlayerCallback callback) {
         context = sliceContext;
+        this.callback = callback;
     }
 
     /**
@@ -85,8 +93,7 @@ public class VideoPlayerPlugin {
         }
 
         videoPlayer = new Player(context);
-        videoPlayer.setPlayerCallback(new VideoCallBack());
-
+        videoPlayer.setPlayerCallback(this);
         videoRunnable = () -> play(avElement, surface);
         ThreadPoolManager.getInstance().execute(videoRunnable);
     }
@@ -108,7 +115,6 @@ public class VideoPlayerPlugin {
         LogUtil.info(TAG, source.getUri());
 
         videoPlayer.prepare();
-        videoPlayer.play();
     }
 
     /**
@@ -132,50 +138,59 @@ public class VideoPlayerPlugin {
         }
     }
 
-    private static class VideoCallBack implements Player.IPlayerCallback {
-        @Override
-        public void onPrepared() {
-            LogUtil.info(TAG, "onPrepared");
-        }
+    @Override
+    public void onPrepared() {
+        LogUtil.info(TAG, "onPrepared");
+        videoPlayer.play();
+    }
 
-        @Override
-        public void onMessage(int type, int extra) {
-            LogUtil.info(TAG, "onMessage" + type);
-        }
+    @Override
+    public void onMessage(int type, int extra) {
+        LogUtil.info(TAG, "onMessage" + type);
+    }
 
-        @Override
-        public void onError(int errorType, int errorCode) {
-            LogUtil.error(TAG, "onError" + errorType);
-        }
-
-        @Override
-        public void onResolutionChanged(int width, int height) {
-            LogUtil.info(TAG, "onResolutionChanged" + width);
-        }
-
-        @Override
-        public void onPlayBackComplete() {
-            LogUtil.info(TAG, "onPlayBackComplete");
-        }
-
-        @Override
-        public void onRewindToComplete() {
-            LogUtil.info(TAG, "onRewindToComplete");
-        }
-
-        @Override
-        public void onBufferingChange(int percent) {
-            LogUtil.info(TAG, "onBufferingChange" + percent);
-        }
-
-        @Override
-        public void onNewTimedMetaData(Player.MediaTimedMetaData mediaTimedMetaData) {
-            LogUtil.info(TAG, "onNewTimedMetaData" + mediaTimedMetaData.toString());
-        }
-
-        @Override
-        public void onMediaTimeIncontinuity(Player.MediaTimeInfo mediaTimeInfo) {
-            LogUtil.info(TAG, "onNewTimedMetaData" + mediaTimeInfo.toString());
+    @Override
+    public void onError(int errorType, int errorCode) {
+        LogUtil.error(TAG, "onError" + errorType + ", skip to the next video");
+        if (this.callback != null) {
+            this.callback.onPlayBackComplete();
         }
     }
+
+    @Override
+    public void onResolutionChanged(int width, int height) {
+        LogUtil.info(TAG, "onResolutionChanged" + width);
+    }
+
+    @Override
+    public void onPlayBackComplete() {
+        LogUtil.info(TAG, "onPlayBackComplete");
+        if (this.callback != null) {
+            this.callback.onPlayBackComplete();
+        }
+    }
+
+    @Override
+    public void onRewindToComplete() {
+        LogUtil.info(TAG, "onRewindToComplete");
+    }
+
+    @Override
+    public void onBufferingChange(int percent) {
+        LogUtil.info(TAG, "onBufferingChange" + percent);
+        if (this.callback != null) {
+            this.callback.onBuffering(percent);
+        }
+    }
+
+    @Override
+    public void onNewTimedMetaData(Player.MediaTimedMetaData mediaTimedMetaData) {
+        LogUtil.info(TAG, "onNewTimedMetaData" + mediaTimedMetaData.toString());
+    }
+
+    @Override
+    public void onMediaTimeIncontinuity(Player.MediaTimeInfo mediaTimeInfo) {
+        LogUtil.info(TAG, "onNewTimedMetaData" + mediaTimeInfo.toString());
+    }
+
 }
