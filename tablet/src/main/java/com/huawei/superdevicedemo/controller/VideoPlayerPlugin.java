@@ -129,6 +129,17 @@ public class VideoPlayerPlugin implements Player.IPlayerCallback {
     }
 
     /**
+     * back
+     */
+    public void back() {
+        if (videoPlayer == null) {
+            return;
+        }
+        videoPlayer.rewindTo(videoPlayer.getCurrentTime() - REWIND_TIME);
+        LogUtil.info(TAG, "seek" + videoPlayer.getCurrentTime());
+    }
+
+    /**
      * release player
      */
     public void release() {

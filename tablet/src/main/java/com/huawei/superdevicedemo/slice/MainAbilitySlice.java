@@ -2,9 +2,7 @@ package com.huawei.superdevicedemo.slice;
 
 import com.huawei.superdevicedemo.MainAbility;
 import com.huawei.superdevicedemo.ResourceTable;
-import com.huawei.superdevicedemo.controller.LogUtil;
-import com.huawei.superdevicedemo.controller.VideoElementManager;
-import com.huawei.superdevicedemo.controller.VideoPlayerPlugin;
+import com.huawei.superdevicedemo.controller.*;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
 import ohos.agp.components.Component;
@@ -22,7 +20,7 @@ import ohos.security.SystemPermission;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callback {
+public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callback, DistributeNotificationPlugin.DistributeNotificationEvenListener {
     private static final String TAG = MainAbilitySlice.class.getSimpleName();
     private List<AVElement> avElements = new ArrayList<>();
     private VideoPlayerPlugin videoPlayerPlugin;
@@ -32,6 +30,7 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
     private Image playButton;
     private RoundProgressBar progressBar;
     private int currentPosition;
+    private DistributeNotificationPlugin distributeNotificationPlugin;
 
     @Override
     public void onStart(Intent intent) {
@@ -66,8 +65,51 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
     }
 
     @Override
+    public void onEventPublish(String result) {
+        LogUtil.info(TAG, result);
+    }
+
+    @Override
+    public void onEventSubscribe(String result) {
+        LogUtil.info(TAG, result);
+    }
+
+    @Override
+    public void onEventUnsubscribe(String result) {
+        LogUtil.info(TAG, result);
+    }
+
+    @Override
+    public void onEventReceive(String result) {
+        LogUtil.info(TAG, result);
+        switch (result) {
+            case Const.PLAY:
+                play();
+                break;
+            case Const.PAUSE:
+                pause();
+                break;
+            case Const.FORWARD:
+                play(currentPosition + 1);
+                break;
+            case Const.REWIND:
+                play(currentPosition - 1);
+                break;
+            case Const.NEXT:
+                videoPlayerPlugin.seek();
+                break;
+            case Const.PREVIOUS:
+                videoPlayerPlugin.back();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void onStop() {
         videoPlayerPlugin.release();
+        distributeNotificationPlugin.unsubscribeEvent();
         super.onStop();
     }
 
@@ -105,6 +147,9 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
         VideoElementManager videoElementManager = new VideoElementManager(this);
         avElements = videoElementManager.getAvElements();
         currentPosition = 0;
+        distributeNotificationPlugin = DistributeNotificationPlugin.getInstance();
+        distributeNotificationPlugin.setEventListener(this);
+        distributeNotificationPlugin.subscribeEvent();
     }
 
     private void setupUI() {
@@ -120,11 +165,9 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
         Image rewindButton = (Image) findComponentById(ResourceTable.Id_rewind_button);
         playButton.setClickedListener(component -> {
             if (videoPlayerPlugin.isPlaying()) {
-                videoPlayerPlugin.pausePlay();
-                playButton.setPixelMap(ResourceTable.Media_play_button);
+                pause();
             } else {
-                videoPlayerPlugin.startPlay();
-                playButton.setPixelMap(ResourceTable.Media_pause_button);
+                play();
             }
         });
         forwardButton.setClickedListener(component -> play(currentPosition + 1));
@@ -146,4 +189,13 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
         videoPlayerPlugin.startPlay(avElements.get(position), surface);
     }
 
+    private void play() {
+        videoPlayerPlugin.startPlay();
+        playButton.setPixelMap(ResourceTable.Media_pause_button);
+    }
+
+    private void pause() {
+        videoPlayerPlugin.pausePlay();
+        playButton.setPixelMap(ResourceTable.Media_play_button);
+    }
 }
