@@ -88,6 +88,8 @@ public class MainAbilitySlice extends AbilitySlice {
         if (tablet == null) {
             getTabletDevice();
             DeviceManager.registerDeviceStateCallback(callback);
+        } else {
+            startVideoPlayerOnTablet();
         }
     }
 
