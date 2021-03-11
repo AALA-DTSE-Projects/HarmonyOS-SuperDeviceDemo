@@ -40,16 +40,34 @@ public class MainAbilitySlice extends AbilitySlice {
         }
     };
 
+    private IDeviceStateCallback callback = new IDeviceStateCallback() {
+        @Override
+        public void onDeviceOffline(String deviceId, int deviceType) {
+            if (tablet != null && tablet.getDeviceId().equals(deviceId)) {
+                showToast("Device offline");
+                disconnectAbility(connection);
+                tablet = null;
+            }
+        }
+
+        @Override
+        public void onDeviceOnline(String deviceId, int deviceType) {
+            handler.sendEvent(EVENT_STATE_CHANGE);
+        }
+    };
+
     private IAbilityConnection connection = new IAbilityConnection() {
         @Override
         public void onAbilityConnectDone(ElementName elementName, IRemoteObject remote, int resultCode) {
             remoteProxy = new PlayerRemoteProxy(remote);
             isPlaying = true;
+            LogUtil.info(TAG, "ability connect done!");
             setupRemoteButton();
         }
 
         @Override
         public void onAbilityDisconnectDone(ElementName elementName, int i) {
+            LogUtil.info(TAG, "ability disconnect done!");
             disconnectAbility(connection);
         }
     };
@@ -67,14 +85,17 @@ public class MainAbilitySlice extends AbilitySlice {
     @Override
     public void onActive() {
         super.onActive();
-        getTabletDevice();
-        registerDeviceStateCallback();
-        startVideoPlayerOnTablet();
+        if (tablet == null) {
+            getTabletDevice();
+            DeviceManager.registerDeviceStateCallback(callback);
+        }
     }
 
     @Override
-    public void onForeground(Intent intent) {
-        super.onForeground(intent);
+    public void onStop() {
+        super.onStop();
+        disconnectAbility(connection);
+        DeviceManager.unregisterDeviceStateCallback(callback);
     }
 
     private void requestPermissions(String... permissions) {
@@ -96,45 +117,30 @@ public class MainAbilitySlice extends AbilitySlice {
         } else {
             devices.forEach(deviceInfo -> {
                 LogUtil.info(TAG, "Found device " + deviceInfo.getDeviceType());
-                if (deviceInfo.getDeviceType() == DeviceInfo.DeviceType.SMART_PAD) {
+                if (deviceInfo.getDeviceType() == DeviceInfo.DeviceType.SMART_PAD &&
+                        (tablet == null || !tablet.getDeviceId().equals(deviceInfo.getDeviceId()))) {
                     tablet = deviceInfo;
+                    startVideoPlayerOnTablet();
                 }
             });
         }
     }
 
-    private void registerDeviceStateCallback() {
-        DeviceManager.registerDeviceStateCallback(new IDeviceStateCallback() {
-            @Override
-            public void onDeviceOffline(String deviceId, int deviceType) {
-                if (tablet != null && tablet.getDeviceId().equals(deviceId)) {
-                    showToast("Device offline");
-                }
-            }
-
-            @Override
-            public void onDeviceOnline(String deviceId, int deviceType) {
-                handler.sendEvent(EVENT_STATE_CHANGE);
-            }
-        });
-    }
-
     private void startVideoPlayerOnTablet() {
-        if (tablet != null) {
-            String deviceId = tablet.getDeviceId();
-            if (deviceId == null) {
-                return;
-            }
-            Intent intent = new Intent();
-            Operation operation = new Intent.OperationBuilder()
-                    .withDeviceId(deviceId)
-                    .withBundleName(Const.BUNDLE_NAME)
-                    .withAbilityName(Const.ABILITY_NAME)
-                    .withFlags(Intent.FLAG_ABILITYSLICE_MULTI_DEVICE)
-                    .build();
-            intent.setOperation(operation);
-            connectAbility(intent, connection);
+        String deviceId = tablet.getDeviceId();
+        if (deviceId == null) {
+            return;
         }
+        Intent intent = new Intent();
+        Operation operation = new Intent.OperationBuilder()
+                .withDeviceId(deviceId)
+                .withBundleName(Const.BUNDLE_NAME)
+                .withAbilityName(Const.ABILITY_NAME)
+                .withFlags(Intent.FLAG_ABILITYSLICE_MULTI_DEVICE)
+                .build();
+        intent.setOperation(operation);
+        connectAbility(intent, connection);
+        LogUtil.info(TAG, "connect ability on tablet with id " + deviceId );
     }
 
     private void setupRemoteButton() {
