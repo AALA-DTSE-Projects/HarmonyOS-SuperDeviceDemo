@@ -45,6 +45,12 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
     }
 
     @Override
+    public void onActive() {
+        super.onActive();
+        requestPermissions(SystemPermission.DISTRIBUTED_DATASYNC);
+    }
+
+    @Override
     public void surfaceCreated(SurfaceOps surfaceOps) {
         if (surfaceProvider.getSurfaceOps().isPresent()) {
             surface = surfaceProvider.getSurfaceOps().get().getSurface();

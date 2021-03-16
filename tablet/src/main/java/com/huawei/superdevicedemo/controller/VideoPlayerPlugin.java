@@ -33,11 +33,11 @@ public class VideoPlayerPlugin implements Player.IPlayerCallback {
 
     private Player videoPlayer;
 
-    private Context context;
+    private final Context context;
 
     private Runnable videoRunnable;
 
-    private MediaPlayerCallback callback;
+    private final MediaPlayerCallback callback;
 
     public interface MediaPlayerCallback {
         void onPlayBackComplete();

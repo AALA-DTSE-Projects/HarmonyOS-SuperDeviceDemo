@@ -11,8 +11,9 @@ import ohos.rpc.IRemoteObject;
 
 public class MainAbility extends Ability {
     public static final int REQUEST_CODE = 1;
+    public static final int TERMINATE_DELAY_TIME = 3000;
     private static final String TAG = MainAbility.class.getSimpleName();
-    private PlayerRemote remote = new PlayerRemote();
+    private final PlayerRemote remote = new PlayerRemote();
 
     @Override
     public void onStart(Intent intent) {
@@ -27,6 +28,7 @@ public class MainAbility extends Ability {
                 LogUtil.debug(TAG, "Permission granted");
             } else {
                 new ToastDialog(this).setText("Permission is required to proceed").show();
+                getMainTaskDispatcher().delayDispatch(this::terminateAbility, TERMINATE_DELAY_TIME);
             }
         }
     }

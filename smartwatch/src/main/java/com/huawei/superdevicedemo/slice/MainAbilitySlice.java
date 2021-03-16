@@ -11,6 +11,7 @@ import ohos.aafwk.content.Intent;
 import ohos.aafwk.content.Operation;
 import ohos.agp.components.Image;
 import ohos.agp.window.dialog.ToastDialog;
+import ohos.bundle.AbilityInfo;
 import ohos.bundle.ElementName;
 import ohos.bundle.IBundleManager;
 import ohos.distributedschedule.interwork.DeviceInfo;
@@ -20,6 +21,7 @@ import ohos.eventhandler.EventHandler;
 import ohos.eventhandler.EventRunner;
 import ohos.eventhandler.InnerEvent;
 import ohos.rpc.IRemoteObject;
+import ohos.rpc.RemoteException;
 import ohos.security.SystemPermission;
 
 import java.util.List;
@@ -31,7 +33,7 @@ public class MainAbilitySlice extends AbilitySlice {
     private PlayerRemoteProxy remoteProxy;
     private boolean isPlaying;
 
-    private EventHandler handler = new EventHandler(EventRunner.current()) {
+    private final EventHandler handler = new EventHandler(EventRunner.current()) {
         @Override
         protected void processEvent(InnerEvent event) {
             if (event.eventId == EVENT_STATE_CHANGE) {
@@ -40,7 +42,7 @@ public class MainAbilitySlice extends AbilitySlice {
         }
     };
 
-    private IDeviceStateCallback callback = new IDeviceStateCallback() {
+    private final IDeviceStateCallback callback = new IDeviceStateCallback() {
         @Override
         public void onDeviceOffline(String deviceId, int deviceType) {
             if (tablet != null && tablet.getDeviceId().equals(deviceId)) {
@@ -56,7 +58,7 @@ public class MainAbilitySlice extends AbilitySlice {
         }
     };
 
-    private IAbilityConnection connection = new IAbilityConnection() {
+    private final IAbilityConnection connection = new IAbilityConnection() {
         @Override
         public void onAbilityConnectDone(ElementName elementName, IRemoteObject remote, int resultCode) {
             remoteProxy = new PlayerRemoteProxy(remote);
@@ -141,8 +143,21 @@ public class MainAbilitySlice extends AbilitySlice {
                 .withFlags(Intent.FLAG_ABILITYSLICE_MULTI_DEVICE)
                 .build();
         intent.setOperation(operation);
-        connectAbility(intent, connection);
-        LogUtil.info(TAG, "connect ability on tablet with id " + deviceId );
+        try {
+            List<AbilityInfo> abilityInfoList = getBundleManager().queryAbilityByIntent(
+                    intent,
+                    IBundleManager.GET_BUNDLE_DEFAULT,
+                    0);
+            if (abilityInfoList != null && !abilityInfoList.isEmpty()) {
+                connectAbility(intent, connection);
+                LogUtil.info(TAG, "connect ability on tablet with id " + deviceId );
+            } else {
+                showToast("Cannot start video player on tablet");
+                getMainTaskDispatcher().delayDispatch(this::terminate, MainAbility.TERMINATE_DELAY_TIME);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupRemoteButton() {

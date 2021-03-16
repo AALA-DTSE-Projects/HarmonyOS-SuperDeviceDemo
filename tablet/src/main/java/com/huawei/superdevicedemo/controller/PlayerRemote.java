@@ -4,7 +4,7 @@ import ohos.rpc.*;
 
 public class PlayerRemote extends RemoteObject implements IRemoteBroker {
     static final int REMOTE_COMMAND = 0;
-    private DistributeNotificationPlugin distributeNotificationPlugin;
+    private final DistributeNotificationPlugin distributeNotificationPlugin;
 
     public PlayerRemote() {
         super("Player Remote");
