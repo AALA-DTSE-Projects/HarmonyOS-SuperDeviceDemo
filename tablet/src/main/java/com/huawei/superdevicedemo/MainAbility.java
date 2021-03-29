@@ -1,24 +1,23 @@
 package com.huawei.superdevicedemo;
 
+import com.huawei.superdevicedemo.controller.Const;
 import com.huawei.superdevicedemo.controller.LogUtil;
-import com.huawei.superdevicedemo.controller.PlayerRemote;
 import com.huawei.superdevicedemo.slice.MainAbilitySlice;
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.content.Intent;
 import ohos.agp.window.dialog.ToastDialog;
 import ohos.bundle.IBundleManager;
-import ohos.rpc.IRemoteObject;
 
 public class MainAbility extends Ability {
     public static final int REQUEST_CODE = 1;
     public static final int TERMINATE_DELAY_TIME = 3000;
     private static final String TAG = MainAbility.class.getSimpleName();
-    private final PlayerRemote remote = new PlayerRemote();
 
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
         super.setMainRoute(MainAbilitySlice.class.getName());
+        addActionRoute(Const.VIDEO_PLAY_ACTION, MainAbilitySlice.class.getName());
     }
 
     @Override
@@ -31,11 +30,5 @@ public class MainAbility extends Ability {
                 getMainTaskDispatcher().delayDispatch(this::terminateAbility, TERMINATE_DELAY_TIME);
             }
         }
-    }
-
-    @Override
-    public IRemoteObject onConnect(Intent intent) {
-        super.onConnect(intent);
-        return remote.asObject();
     }
 }

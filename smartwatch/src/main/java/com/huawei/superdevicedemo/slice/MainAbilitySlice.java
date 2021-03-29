@@ -64,6 +64,7 @@ public class MainAbilitySlice extends AbilitySlice {
             remoteProxy = new PlayerRemoteProxy(remote);
             isPlaying = true;
             LogUtil.info(TAG, "ability connect done!");
+            remoteProxy.remoteControl(Const.START);
             setupRemoteButton();
         }
 
@@ -79,8 +80,7 @@ public class MainAbilitySlice extends AbilitySlice {
         super.onStart(intent);
         super.setUIContent(ResourceTable.Layout_ability_main);
         requestPermissions(
-                SystemPermission.DISTRIBUTED_DATASYNC,
-                SystemPermission.GET_BUNDLE_INFO
+                SystemPermission.DISTRIBUTED_DATASYNC
         );
     }
 
@@ -158,6 +158,10 @@ public class MainAbilitySlice extends AbilitySlice {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+//        LogUtil.info(TAG, "connect ability on tablet with id " + deviceId );
+//        connectAbility(intent, connection);
+//        startAbility(intent);
+//        LogUtil.info(TAG, "start ability on tablet with id " + deviceId );
     }
 
     private void setupRemoteButton() {

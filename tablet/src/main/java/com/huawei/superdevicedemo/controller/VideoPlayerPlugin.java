@@ -149,6 +149,18 @@ public class VideoPlayerPlugin implements Player.IPlayerCallback {
         }
     }
 
+    /**
+     * Get current play position
+     *
+     * @return play position
+     */
+    public int getCurrentPlayPosition() {
+        if (videoPlayer == null) {
+            return  0;
+        }
+        return videoPlayer.getCurrentTime();
+    }
+
     @Override
     public void onPrepared() {
         LogUtil.info(TAG, "onPrepared");

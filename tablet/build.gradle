@@ -20,7 +20,7 @@ ohos {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.har'])
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     ohosTestImplementation 'decc.testkit:harmonyjunitrunner:0.3'
 }
 decc {

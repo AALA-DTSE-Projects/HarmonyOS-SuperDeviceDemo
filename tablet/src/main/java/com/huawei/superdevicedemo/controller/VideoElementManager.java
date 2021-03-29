@@ -35,6 +35,8 @@ import java.util.List;
 public class VideoElementManager {
     private static final String TAG = VideoElementManager.class.getSimpleName();
     private static final String WEB_VIDEO_PATH = "https://ss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/cae-legoup-video-target/93be3d88-9fc2-4fbd-bd14-833bca731ca7.mp4";
+    private static final String HARMONY_VIDEO_PATH_1 = "https://mos-vod-drcn.dbankcdn.cn/P_VT/video_injection/AD1346286/v3/1AD16FA31131002495678550784/MP4Mix_H.264_1920x1080_6000_HEAAC1_PVC_NoCut.mp4";
+    private static final String HARMONY_VIDEO_PATH_2 = "https://mos-vod-drcn.dbankcdn.cn/P_VT/video_injection/4A1346286/v3/65F9A8A51131004011894281344/MP4Mix_H.264_1920x1080_6000_HEAAC1_PVC_NoCut.mp4";
     private final List<AVElement> avElements = new ArrayList<>();
 
     /**
@@ -89,5 +91,19 @@ public class VideoElementManager {
                         .setMediaId(WEB_VIDEO_PATH)
                         .build(),
                 AVElement.AVELEMENT_FLAG_PLAYABLE));
+        avElements.add(
+                new AVElement(new AVDescription.Builder()
+                        .setTitle("harmony_video_1")
+                        .setIMediaUri(Uri.parse(HARMONY_VIDEO_PATH_1))
+                        .setMediaId(WEB_VIDEO_PATH)
+                        .build(),
+                        AVElement.AVELEMENT_FLAG_PLAYABLE));
+        avElements.add(
+                new AVElement(new AVDescription.Builder()
+                        .setTitle("harmony_video_2")
+                        .setIMediaUri(Uri.parse(HARMONY_VIDEO_PATH_2))
+                        .setMediaId(WEB_VIDEO_PATH)
+                        .build(),
+                        AVElement.AVELEMENT_FLAG_PLAYABLE));
     }
 }

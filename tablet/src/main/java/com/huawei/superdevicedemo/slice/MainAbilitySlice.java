@@ -181,6 +181,7 @@ public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callbac
     }
 
     private void play(int position) {
+        progressBar.setVisibility(Component.HIDE);
         int maxPosition = avElements.size() - 1;
         if (position > maxPosition) {
             position = 0;

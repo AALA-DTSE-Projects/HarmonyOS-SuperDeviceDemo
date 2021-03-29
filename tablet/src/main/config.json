@@ -8,9 +8,9 @@
     },
     "apiVersion": {
       "compatible": 4,
-      "target": 4,
-      "releaseType": "Beta2"
-    }
+      "target": 4
+    },
+    "type": "normal"
   },
   "deviceConfig": {},
   "module": {
@@ -46,6 +46,12 @@
         "label": "$string:app_name",
         "type": "page",
         "launchType": "standard"
+      },
+      {
+        "name": "com.huawei.superdevicedemo.VideoPlayerServiceAbility",
+        "icon": "$media:icon",
+        "description": "$string:videoplayerserviceability_description",
+        "type": "service"
       }
     ],
     "reqPermissions": [
