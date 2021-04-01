@@ -20,7 +20,7 @@ import ohos.security.SystemPermission;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callback, DistributeNotificationPlugin.DistributeNotificationEvenListener {
+public class MainAbilitySlice extends AbilitySlice implements SurfaceOps.Callback, DistributeNotificationPlugin.DistributeNotificationEventListener {
     private static final String TAG = MainAbilitySlice.class.getSimpleName();
     private List<AVElement> avElements = new ArrayList<>();
     private VideoPlayerPlugin videoPlayerPlugin;

@@ -28,7 +28,7 @@ public class DistributeNotificationPlugin {
     private static final String NOTIFICATION_ACTION = "com.huawei.superdevicedemo";
     private static final String NOTIFICATION_KEY = "notification_key";
     private CommonEventSubscriber commonEventSubscriber;
-    private DistributeNotificationEvenListener eventListener;
+    private DistributeNotificationEventListener eventListener;
     private static DistributeNotificationPlugin instance;
 
     public static synchronized DistributeNotificationPlugin getInstance() {
@@ -132,7 +132,7 @@ public class DistributeNotificationPlugin {
      *
      * @since 2020-07-02
      */
-    public interface DistributeNotificationEvenListener {
+    public interface DistributeNotificationEventListener {
         void onEventPublish(String result);
 
         void onEventSubscribe(String result);
@@ -142,7 +142,7 @@ public class DistributeNotificationPlugin {
         void onEventReceive(String result);
     }
 
-    public void setEventListener(DistributeNotificationEvenListener eventListener) {
+    public void setEventListener(DistributeNotificationEventListener eventListener) {
         this.eventListener = eventListener;
     }
 }

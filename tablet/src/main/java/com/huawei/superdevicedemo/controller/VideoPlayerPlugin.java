@@ -175,6 +175,7 @@ public class VideoPlayerPlugin implements Player.IPlayerCallback {
     @Override
     public void onError(int errorType, int errorCode) {
         LogUtil.error(TAG, "onError" + errorType + ", skip to the next video");
+        videoPlayer.stop();
         if (this.callback != null) {
             this.callback.onPlayBackComplete();
         }
