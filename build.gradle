@@ -18,7 +18,7 @@ ohos {
         compatibleSdkVersion 5
     }
 }
-	
+
 buildscript {
     repositories {
         maven {
@@ -27,13 +27,13 @@ buildscript {
         maven {
             url 'https://developer.huawei.com/repo/'
         }
-		maven {
+        maven {
             url 'http://artifactory.cde.huawei.com/artifactory/Product-Binary-Release'
         }
-		jcenter()
+        jcenter()
     }
     dependencies {
-        classpath 'com.huawei.ohos:hap:2.4.2.2'
+        classpath 'com.huawei.ohos:hap:2.4.2.5'
         classpath 'com.huawei.ohos:decctest:1.0.0.6'
     }
 }
@@ -46,9 +46,9 @@ allprojects {
         maven {
             url 'https://developer.huawei.com/repo/'
         }
-		maven {
+        maven {
             url 'http://artifactory.cde.huawei.com/artifactory/Product-Binary-Release'
         }
-		jcenter()
+        jcenter()
     }
 }
