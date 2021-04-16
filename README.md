@@ -38,10 +38,4 @@ User can use smartwatch to play video on tablet.
 - Get your device's UDID and tell me to update the provision file  
 - Connect your device to PC then deploy 
  - tablet module on tablet as a video player
- - smartwatch module on tablet or another device as a remote control
- 
-## Demo result
-You can take a look at the demoVideos directory.
-
- 
- 
+ - smartwatch module on tablet or another device as a remote control 
