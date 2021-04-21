@@ -2,12 +2,23 @@
 apply plugin: 'com.huawei.ohos.app'
 
 ohos {
-    compileSdkVersion 4
+    signingConfigs {
+        release {
+            storeFile file('./keystore/debug.p12')
+            storePassword '0000001A2116A14F25CE7C39D1A86ABFDCA8E5CF7165AD3E566C86CAEC651DC421761FD31412E052DFDF'
+            keyAlias 'debug'
+            keyPassword '0000001AA56E268EEB98F54552FD97FDE98BD2B43C40B91AD8DB0FB748EE5A2A566C0CE2132292AFD3E4'
+            signAlg 'SHA256withECDSA'
+            profile file('./keystore/superDeviceDebug.p7b')
+            certpath file('./keystore/superdevice.cer')
+        }
+    }
+    compileSdkVersion 5
     defaultConfig {
-        compatibleSdkVersion 4
+        compatibleSdkVersion 5
     }
 }
-	
+
 buildscript {
     repositories {
         maven {
@@ -16,14 +27,14 @@ buildscript {
         maven {
             url 'https://developer.huawei.com/repo/'
         }
-		maven {
+        maven {
             url 'http://artifactory.cde.huawei.com/artifactory/Product-Binary-Release'
         }
-		jcenter()
+        jcenter()
     }
     dependencies {
-        classpath 'com.huawei.ohos:hap:2.4.1.5'
-        classpath 'com.huawei.ohos:decctest:1.0.0.+'
+        classpath 'com.huawei.ohos:hap:2.4.2.5'
+        classpath 'com.huawei.ohos:decctest:1.0.0.6'
     }
 }
 
@@ -35,9 +46,9 @@ allprojects {
         maven {
             url 'https://developer.huawei.com/repo/'
         }
-		maven {
+        maven {
             url 'http://artifactory.cde.huawei.com/artifactory/Product-Binary-Release'
         }
-		jcenter()
+        jcenter()
     }
 }

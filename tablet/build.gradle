@@ -1,16 +1,26 @@
 apply plugin: 'com.huawei.ohos.hap'
 apply plugin: 'com.huawei.ohos.decctest'
 ohos {
+    signingConfigs {
+        debug {
+            storeFile file('../keystore/debug.p12')
+            storePassword '0000001A317F27EC695EDF6A4CFF749A816A3272F997397E7E25C146A86D6CB753BCA804D1E2AAAB9616'
+            keyAlias 'debug'
+            keyPassword '0000001A0319EB7536DE342FA034C9E22FCAD965D9CF941D2B1D2949A36B93AB05CD1D503BFD2497B3CD'
+            signAlg 'SHA256withECDSA'
+            profile file('../keystore/superDeviceDebug.p7b')
+            certpath file('../keystore/superdevice.cer')
+        }
+    }
     compileSdkVersion 4
     defaultConfig {
         compatibleSdkVersion 4
     }
-    
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.har'])
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     ohosTestImplementation 'decc.testkit:harmonyjunitrunner:0.3'
 }
 decc {

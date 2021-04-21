@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DirectionalLayout
+<DependentLayout
     xmlns:ohos="http://schemas.huawei.com/res/ohos"
     ohos:height="match_parent"
     ohos:width="match_parent"
     ohos:orientation="vertical">
 
-    <Text
-        ohos:id="$+id:text_helloworld"
-        ohos:height="match_parent"
+    <Image
+        ohos:id="$+id:play_button"
+        ohos:height="match_content"
         ohos:width="match_content"
-        ohos:background_element="$graphic:background_ability_main"
-        ohos:layout_alignment="horizontal_center"
-        ohos:text="$string:HelloWorld"
-        ohos:text_size="50"
-        />
+        ohos:image_src="$media:pause_button"
+        ohos:center_in_parent="true" />
 
-</DirectionalLayout>
+    <Image
+        ohos:id="$+id:forward_button"
+        ohos:height="match_content"
+        ohos:width="match_content"
+        ohos:image_src="$media:forward_button"
+        ohos:center_in_parent="true"
+        ohos:align_parent_right="true" />
+
+    <Image
+        ohos:id="$+id:rewind_button"
+        ohos:height="match_content"
+        ohos:width="match_content"
+        ohos:image_src="$media:rewind_button"
+        ohos:center_in_parent="true"
+        ohos:align_parent_left="true"/>
+
+    <Image
+        ohos:id="$+id:next_button"
+        ohos:height="match_content"
+        ohos:width="match_content"
+        ohos:image_src="$media:next_button"
+        ohos:center_in_parent="true"
+        ohos:align_parent_top="true"/>
+
+    <Image
+        ohos:id="$+id:previous_button"
+        ohos:height="match_content"
+        ohos:width="match_content"
+        ohos:image_src="$media:previous_button"
+        ohos:center_in_parent="true"
+        ohos:align_parent_bottom="true"/>
+
+</DependentLayout>

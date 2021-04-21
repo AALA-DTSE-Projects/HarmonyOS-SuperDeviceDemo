@@ -7,7 +7,7 @@
       "name": "1.0"
     },
     "apiVersion": {
-      "compatible": 3,
+      "compatible": 4,
       "target": 4,
       "releaseType": "Beta2"
     }
