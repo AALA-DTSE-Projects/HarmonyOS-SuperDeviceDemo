@@ -95,14 +95,14 @@ public class VideoElementManager {
                 new AVElement(new AVDescription.Builder()
                         .setTitle("harmony_video_1")
                         .setIMediaUri(Uri.parse(HARMONY_VIDEO_PATH_1))
-                        .setMediaId(WEB_VIDEO_PATH)
+                        .setMediaId(HARMONY_VIDEO_PATH_1)
                         .build(),
                         AVElement.AVELEMENT_FLAG_PLAYABLE));
         avElements.add(
                 new AVElement(new AVDescription.Builder()
                         .setTitle("harmony_video_2")
                         .setIMediaUri(Uri.parse(HARMONY_VIDEO_PATH_2))
-                        .setMediaId(WEB_VIDEO_PATH)
+                        .setMediaId(HARMONY_VIDEO_PATH_2)
                         .build(),
                         AVElement.AVELEMENT_FLAG_PLAYABLE));
     }
