@@ -35,7 +35,11 @@ User can use smartwatch to play video on tablet.
  Now lite wearable hasn't supported distributed capability yet so we will develop it in the future
  
 ## How to run
-- Get your device's UDID and tell me to update the provision file  
+- Create your own keystore, cert, provision file
+- Get your devices' UDID, add in AGC and download the updated provision file  
 - Connect your device to PC then deploy 
  - tablet module on tablet as a video player
  - smartwatch module on tablet or another device as a remote control 
+
+## Demo result
+![](screenshot/distributedVideoDemo.gif)
