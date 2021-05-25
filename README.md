@@ -6,8 +6,9 @@ Distributed video player demo on tablet and smartwatch.
 User can use a smartwatch to control a video player on tablet.  
 
 ## Project structure
-- smartwatch (smartwatch module)  
- Remote control module, is customized to run on not only smartwatch but also other devices as tablet, smartphone
+
+**smartwatch (smartwatch module)**</br>
+&emsp;Remote control module, is customized to run on not only smartwatch but also other devices as tablet, smartphone
  - controller
    - Const.java: to hold const values
    - LogUtil.java: to print logs
@@ -17,7 +18,8 @@ User can use a smartwatch to control a video player on tablet.
  - MainAbility.java: end point Ability
  - MyApplication.java: application class
 - tablet (tablet module)  
- Video player module
+
+**Video player module**
  - controller
    - Const.java: to hold const values
    - DistributeNotificationPlugin.java: to manage internal event, including sending, subscribing and unsubscribing
@@ -31,8 +33,9 @@ User can use a smartwatch to control a video player on tablet.
  - MainAbility.java: end point Ability
  - VideoPlayerServiceAbility.java: service Ability, to connect with smartwatch Ability 
  - MyApplication.java: application class
--litewearable (lite wearable module).  
- Now lite wearable hasn't supported distributed capability yet so we will develop it in the future
+ 
+**litewearable(lite wearable module)**</br>
+&emsp;Now lite wearable hasn't supported distributed capability yet so we will develop it in the future
  
 ## How to run
 - Create your own keystore, cert, provision file
