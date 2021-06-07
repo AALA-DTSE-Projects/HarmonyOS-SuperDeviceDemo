@@ -45,4 +45,4 @@ User can use a smartwatch to control a video player on tablet.
   - smartwatch module on tablet or another device as a remote control 
 
 ## Demo result
-- Please check the screenshot folder to view the video.
+![](screenshot/distributedVideoDemo.gif)
