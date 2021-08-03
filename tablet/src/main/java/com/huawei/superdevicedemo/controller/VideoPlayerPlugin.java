@@ -31,6 +31,8 @@ public class VideoPlayerPlugin implements Player.IPlayerCallback {
 
     private static final int REWIND_TIME = 2000;
 
+    private static final int MIL_TO_MICRO = 1000;
+
     private Player videoPlayer;
 
     private final Context context;
@@ -124,7 +126,7 @@ public class VideoPlayerPlugin implements Player.IPlayerCallback {
         if (videoPlayer == null) {
             return;
         }
-        videoPlayer.rewindTo(videoPlayer.getCurrentTime() + REWIND_TIME);
+        videoPlayer.rewindTo((videoPlayer.getCurrentTime() + REWIND_TIME) * MIL_TO_MICRO);
         LogUtil.info(TAG, "seek" + videoPlayer.getCurrentTime());
     }
 
@@ -135,7 +137,7 @@ public class VideoPlayerPlugin implements Player.IPlayerCallback {
         if (videoPlayer == null) {
             return;
         }
-        videoPlayer.rewindTo(videoPlayer.getCurrentTime() - REWIND_TIME);
+        videoPlayer.rewindTo((videoPlayer.getCurrentTime() - REWIND_TIME) * MIL_TO_MICRO);
         LogUtil.info(TAG, "seek" + videoPlayer.getCurrentTime());
     }
 
